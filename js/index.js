@@ -54,6 +54,7 @@ function startQuiz() {
   timer.textContent = time;
   getQuestion();
 }
+//should end the questions and display the final results, also store the score in local storage...localStorage
 function endQuiz() {
   questionsEl.innerHTML = "";
   time.innerHTML = "";
