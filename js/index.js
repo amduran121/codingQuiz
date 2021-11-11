@@ -10,20 +10,80 @@ var feedbackEl = document.getElementById("feedback");
 
 var time = questions.length * 15;
 var timerId;
+var currentQuestionIndex = 0;
+function getQuestion() {
+  console.log(questions);
+  var currentQuestion = questions[currentQuestionIndex];
+  questionsTitle.textContent = currentQuestion.question;
+  choices.innerHTML = "";
+
+  currentQuestion.choices.forEach(function (choice, i) {
+    var choiceBtn = document.createElement("button");
+    choiceBtn.setAttribute("class", "choice");
+    //in order to style these buttons needs to set a class of choice in CSS
+    choiceBtn.setAttribute("value", choice);
+    choiceBtn.textContent = i + 1 + choice;
+    choiceBtn.onclick = clicked;
+    choices.appendChild(choiceBtn);
+  });
+}
+function clicked() {
+  if (this.value !== questions[currentQuestionIndex].answer) {
+    time -= 15;
+    timer.textContent = time;
+    feedbackEl.textContent = "Wrong Answer";
+  } else {
+    feedbackEl.textContent = "Correct Answer";
+  }
+  feedbackEl.setAttribute("class", "feedback");
+  setTimeout(function () {
+    feedbackEl.setAttribute("class", "feedback hide");
+  }, 3000);
+  currentQuestionIndex++;
+  if (currentQuestionIndex === questions.length) {
+    endQuiz();
+  } else {
+    getQuestion();
+  }
+}
 
 function startQuiz() {
   startScreen.setAttribute("class", "hide");
   questionsEl.removeAttribute("class");
   timerId = setInterval(clock, 1000);
   timer.textContent = time;
-  // getQuestion()
+  getQuestion();
+}
+function endQuiz() {
+  questionsEl.innerHTML = "";
+  time.innerHTML = "";
+
+  var createH1 = document.createElement("h1");
+  createH1.setAttribute("id", "createH1");
+  createH1.textContent = "End of Quiz!";
+
+  questionsEl.appendChild(createH1);
+
+  var createParagraph = document.createElement("p");
+  createParagraph.setAttribute("id", "createParagraph");
+
+  questionsEl.appendChild(createParagraph);
+
+  //this should calculate the remaining time and converts it to score
+  if (timerId >= 0) {
+    var time = timerId;
+    var createP2 = document.createElement("p");
+    clearInterval(holdInterval);
+    createParagraph.textContent = "Your final score is " + time;
+    questionsEl.appendChild(createP2);
+  }
 }
 
 function clock() {
   time--;
   timer.textContent = time;
   if (time <= 0) {
-    // endQuiz()
+    endQuiz();
   }
 }
 
