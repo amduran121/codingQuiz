@@ -29,4 +29,3 @@ var questions = [
     answer: " 19",
   },
 ];
-

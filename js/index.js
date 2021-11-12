@@ -8,9 +8,10 @@ var questionsTitle = document.getElementById("question-title");
 var startScreen = document.getElementById("start-screen");
 var feedbackEl = document.getElementById("feedback");
 
-var time = questions.length * 15;
+var time = questions.length * 5;
 var timerId;
 var currentQuestionIndex = 0;
+
 function getQuestion() {
   console.log(questions);
   var currentQuestion = questions[currentQuestionIndex];
@@ -29,7 +30,7 @@ function getQuestion() {
 }
 function clicked() {
   if (this.value !== questions[currentQuestionIndex].answer) {
-    time -= 15;
+    time -= 5;
     timer.textContent = time;
     feedbackEl.textContent = "Wrong Answer";
   } else {
@@ -84,6 +85,7 @@ function clock() {
   time--;
   timer.textContent = time;
   if (time <= 0) {
+    clearInterval(timerId);
     endQuiz();
   }
 }
